@@ -7,7 +7,7 @@ def relu(x):
 
 
 def sigmoid(x):
-    return np.exp(x) / (1 + eps + np.exp(x))
+    return np.exp(x) / (1 + np.exp(x))
 
 
 def layer_forward(x, w, b):
@@ -41,7 +41,7 @@ n_3 = 8
 n_4 = 1
 
 
-def forward_pass_single(X):
+def initilize_params(X):
     n = X.shape[0]
 
     w1 = np.random.randn(n_1, n)
@@ -56,6 +56,24 @@ def forward_pass_single(X):
     w4 = np.random.randn(n_4, n_3)
     b4 = np.zeros(n_4)
 
+    params = {'w1': w1, 'w2': w2, 'w3': w3, 'w4': w4,
+              'b1': b1, 'b2': b2, 'b3': b3, 'b4': b4}
+
+    return params
+
+
+def forward_pass_single(X, params):
+
+    w1 = params['w1']
+    w2 = params['w2']
+    w3 = params['w3']
+    w4 = params['w4']
+
+    b1 = params['b1']
+    b2 = params['b2']
+    b3 = params['b3']
+    b4 = params['b4']
+
     z1 = np.dot(w1, X) + b1
     a1 = sigmoid(z1)
 
@@ -68,9 +86,7 @@ def forward_pass_single(X):
     z4 = np.dot(w4, a3) + b4
     a4 = sigmoid(z4)
 
-    params =
-
-    return a4
+    return a4, params
 
 
 test_X = np.random.randint(low=0, high=100, size=32)
@@ -78,7 +94,9 @@ test_X = np.random.randint(low=0, high=100, size=32)
 
 # backward pass
 
-def backward_pass_single(X)
+def backward_pass_single(X, params):
+
+
 
 
 print(test_X.shape)
