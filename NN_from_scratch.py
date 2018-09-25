@@ -74,7 +74,9 @@ def forward_pass_single(X, params):
     b3 = params['b3']
     b4 = params['b4']
 
-    z1 = np.dot(w1, X) + b1
+    a0 = X
+
+    z1 = np.dot(w1, a0) + b1
     a1 = sigmoid(z1)
 
     z2 = np.dot(w2, a1) + b2
@@ -86,7 +88,9 @@ def forward_pass_single(X, params):
     z4 = np.dot(w4, a3) + b4
     a4 = sigmoid(z4)
 
-    return a4, params
+    cache = {'a0': a0, 'a1': a1, 'a2': a2, 'a3': a3, 'a4': a4}
+
+    return a4, params, cache
 
 
 test_X = np.random.randint(low=0, high=100, size=32)
@@ -94,8 +98,51 @@ test_X = np.random.randint(low=0, high=100, size=32)
 
 # backward pass
 
-def backward_pass_single(X, params):
+def backward_pass_single(loss, params, cache, lr = 0.001):
 
+    w1 = params['w1']
+    w2 = params['w2']
+    w3 = params['w3']
+    w4 = params['w4']
+
+    b1 = params['b1']
+    b2 = params['b2']
+    b3 = params['b3']
+    b4 = params['b4']
+
+    a0 = cache['a0']
+    a1 = cache['a1']
+    a2 = cache['a2']
+    a3 = cache['a3']
+    a4 = cache['a4']
+
+
+    dw4 = a4*(1-a4)*a3
+    db4 = a4*(1-a4)
+
+    dw3 = a3 * (1 - a3) * a2 * dw3
+    db3 = a3 * (1 - a3) * dw3
+
+    dw2 = a2 * (1 - a2) * a1
+    db2 = a2 * (1 - a2)
+
+    dw1 = a1 * (1 - a1) * a0
+    db1 = a1 * (1 - a1)
+
+    w1 -= lr * dw1
+    w2 -= lr * dw2
+    w3 -= lr * dw3
+    w4 -= lr * dw4
+
+    b1 -= lr * db1
+    b2 -= lr * db2
+    b3 -= lr * db3
+    b4 -= lr * db4
+
+    params = {'w1': w1, 'w2': w2, 'w3': w3, 'w4': w4,
+              'b1': b1, 'b2': b2, 'b3': b3, 'b4': b4}
+
+    return params
 
 
 
